@@ -1,0 +1,26 @@
+# Prometheus scrape configuration — Phase 2 LLM Observability Stack
+#
+# IMPORTANT: Replace x.x.x.x below with your GPU host's actual LAN IP address.
+# Do NOT use 'localhost' here — Prometheus runs inside Docker and 'localhost'
+# resolves to the container's own loopback, not the host running vLLM.
+# Find your host IP with: ip route get 1 | awk '{print $7; exit}'
+
+global:
+  scrape_interval: 5s        # How often to pull metrics from each target
+  evaluation_interval: 5s    # How often to evaluate alerting rules
+
+scrape_configs:
+
+  # vLLM inference engine — software-layer metrics
+  # Exposes: TTFT, TPOT, throughput, KV cache usage, queue depth
+  - job_name: "vllm"
+    static_configs:
+      - targets: ["x.x.x.x:8000"]
+    metrics_path: "/metrics"
+
+  # NVIDIA DCGM Exporter — hardware-layer metrics
+  # Exposes: GPU utilization, VRAM usage, memory bandwidth, power, temperature
+  - job_name: "dcgm"
+    static_configs:
+      - targets: ["x.x.x.x:9400"]
+    metrics_path: "/metrics"
