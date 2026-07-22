@@ -1,0 +1,4 @@
+# Critical: pins torch to CUDA 12.4 build
+# Prevents uv from silently upgrading to torch+cu130 which needs driver 580+
+# Always pass this file to uv: uv pip install <packages> -c constraints.txt
+torch==2.6.0

@@ -1,0 +1,84 @@
+"""
+Phase 1, Step 1.2: INT8 W8A8 quantization of Mistral-Nemo-Instruct-2407
+using LLM-Compressor (SmoothQuant + GPTQ recipe).
+
+Method:    SmoothQuantModifier (activation outlier smoothing)
+           + GPTQModifier (Hessian-based weight quantization)
+Scheme:    W8A8 — weights INT8 static per-channel,
+                   activations INT8 dynamic per-token
+Output:    compressed-tensors format, natively loadable by vLLM
+"""
+
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from datasets import load_dataset
+
+from llmcompressor.transformers import oneshot
+from llmcompressor.modifiers.smoothquant import SmoothQuantModifier
+from llmcompressor.modifiers.quantization import GPTQModifier
+
+# ── Paths ─────────────────────────────────────────────────────────────────────
+MODEL_PATH  = "/home/llm-infra-lab/models/Mistral-Nemo-Instruct-2407"
+OUTPUT_PATH = "/home/llm-infra-lab/models/Mistral-Nemo-Instruct-2407-INT8-W8A8"
+
+# ── Calibration config ────────────────────────────────────────────────────────
+NUM_CALIBRATION_SAMPLES = 512
+MAX_SEQ_LENGTH          = 2048
+
+print("Loading tokenizer...")
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+
+print("Loading model (BF16, ~24GB VRAM)...")
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_PATH,
+    device_map="auto",
+    torch_dtype=torch.bfloat16,
+)
+
+print("Loading calibration dataset (ultrachat_200k)...")
+ds = load_dataset("HuggingFaceH4/ultrachat_200k", split="train_sft")
+ds = ds.shuffle(seed=42).select(range(NUM_CALIBRATION_SAMPLES))
+
+def preprocess(example):
+    text = tokenizer.apply_chat_template(example["messages"], tokenize=False)
+    return {"text": text}
+
+ds = ds.map(preprocess)
+
+def tokenize(sample):
+    return tokenizer(
+        sample["text"],
+        padding=False,
+        max_length=MAX_SEQ_LENGTH,
+        truncation=True,
+        add_special_tokens=False,
+    )
+
+ds = ds.map(tokenize, remove_columns=ds.column_names)
+
+# ── Quantization recipe ───────────────────────────────────────────────────────
+# SmoothQuant: migrates activation outliers into weights before quantization
+# GPTQ: Hessian-based layer-wise weight quantization with error correction
+recipe = [
+    SmoothQuantModifier(smoothing_strength=0.8),
+    GPTQModifier(
+        targets="Linear",
+        scheme="W8A8",
+        ignore=["lm_head"],
+    ),
+]
+
+print("Running oneshot calibration + quantization (~45 min on A40)...")
+oneshot(
+    model=model,
+    dataset=ds,
+    recipe=recipe,
+    max_seq_length=MAX_SEQ_LENGTH,
+    num_calibration_samples=NUM_CALIBRATION_SAMPLES,
+)
+
+print(f"Saving quantized model to {OUTPUT_PATH}...")
+model.save_pretrained(OUTPUT_PATH, save_compressed=True)
+tokenizer.save_pretrained(OUTPUT_PATH)
+
+print("Done.")

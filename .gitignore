@@ -1,0 +1,36 @@
+# Model weights - never commit these (too large, use HuggingFace Hub instead)
+*.safetensors
+*.bin
+*.pt
+*.pth
+models/
+
+# Python environments
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Logs (too noisy for git, keep locally)
+benchmarks/*.log
+*.log
+
+# MLflow artifacts
+mlflow/mlruns/
+
+# Sensitive
+.env
+*token*
+*secret*
+HF_TOKEN
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb

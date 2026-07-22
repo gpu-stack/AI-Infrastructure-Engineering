@@ -1,0 +1,22 @@
+# Phase 1 — Quantization dependencies
+# Install order matters: torch FIRST (from PyTorch index), then this file with constraints.txt
+#
+# uv pip install "torch==2.6.0" --index-url https://download.pytorch.org/whl/cu124
+# uv pip install -r requirements.txt -c constraints.txt
+
+# HuggingFace ecosystem
+huggingface_hub>=1.20.0
+transformers==4.52.4
+accelerate>=0.26.0
+datasets>=2.14.0
+
+# Quantization
+llmcompressor==0.6.0.1
+compressed-tensors==0.10.2
+
+# Core ML
+numpy>=1.26.0
+safetensors>=0.4.0
+
+# Utilities
+tqdm
