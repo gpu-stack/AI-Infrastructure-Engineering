@@ -28,7 +28,7 @@ they were resolved, and documented decision rationale — not just clean tutoria
 | Phase | What | Status |
 |---|---|---|
 | [Phase 1 — Quantization](./phase1-quantization/) | Download Mistral-NeMo-12B-Instruct, quantize to INT8 W8A8 via SmoothQuant + GPTQ | ✅ Complete |
-| [Phase 2 — vLLM Serving](./phase2-vllm-serving/) | Serve INT8 model via vLLM, full Prometheus/Grafana/DCGM observability stack | 🔄 In Progress |
+| [Phase 2 — vLLM Serving](./phase2-vllm-serving/) | Serve INT8 model via vLLM, full Prometheus/Grafana/DCGM observability stack | ✅ Complete |
 | [Phase 3 — vLLM Tuning](./phase3-vllm-tuning/) | Tune KV cache, batching, prefix caching; before/after benchmark comparison | 📋 Planned |
 | [Phase 4 — LoRA Fine-tuning](./phase4-lora-finetuning/) | QLoRA fine-tune on customer support dataset, serve adapter via vLLM multi-LoRA | 📋 Planned |
 
