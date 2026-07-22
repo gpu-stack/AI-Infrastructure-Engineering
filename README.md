@@ -98,8 +98,8 @@ builds on the previous one's artifacts.
 ## Author
 
 **Sandeep Singh**  
-Senior Solutions Architect & Enterprise Architect @ Jio Platforms  
+Senior Solutions Architect & Enterprise Architect
 17 years across distributed systems, hybrid/sovereign cloud, enterprise pre-sales, GenAI infrastructure  
 
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-sandipsingh2007-yellow)](https://huggingface.co/sandipsingh2007)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](www.linkedin.com/in/sandeepsingh-ea)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://linkedin.com/in/sandeepsingh-ea)
