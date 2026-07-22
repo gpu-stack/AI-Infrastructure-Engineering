@@ -22,7 +22,7 @@ to INT8 W8A8 using LLM-Compressor's SmoothQuant + GPTQ recipe, producing a vLLM-
 | Calibration samples | 512 (HuggingFaceH4/ultrachat_200k) |
 | Runtime on A40 | ~45 minutes |
 | Output format | compressed-tensors (vLLM native) |
-| Published artifact | [sandipsingh2007/mistral-nemo-12b-instruct-int8-w8a8](https://huggingface.co/sandipsingh2007/mistral-nemo-12b-instruct-int8-w8a8) |
+| Published artifact | [sandipsingh2007/mistral-nemo-12b-instruct-int8-w8a8](https://huggingface.co/sandipsingh2007/mistral-nemo-instruct-2407-int8-w8a8) |
 
 ---
 
