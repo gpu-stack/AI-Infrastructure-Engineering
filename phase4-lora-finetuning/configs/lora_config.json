@@ -1,0 +1,21 @@
+{
+  "base_model_name_or_path": "mistralai/Mistral-Nemo-Instruct-2407",
+  "peft_type": "LORA",
+  "task_type": "CAUSAL_LM",
+  "r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "bias": "none",
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "_comment_r": "Rank 16: sufficient capacity for style/format adaptation on 25K samples. Lower for smaller datasets, higher only if complex factual learning needed.",
+  "_comment_alpha": "alpha=32, r=16 → scaling=2.0. Standard starting point: adapter updates weighted 2x relative to frozen base.",
+  "_comment_targets": "All 7 linear layers: q/k/v/o for attention routing, gate/up/down for phrasing and format associations."
+}

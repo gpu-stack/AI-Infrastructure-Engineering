@@ -1,0 +1,21 @@
+# Phase 4 — LoRA Fine-Tuning Dependencies
+# Install after torch is pinned:
+# uv pip install "torch==2.6.0" --index-url https://download.pytorch.org/whl/cu124
+# uv pip install -r requirements.txt -c ../phase1-quantization/constraints.txt
+
+# Core training stack
+transformers==4.52.4
+peft>=0.10.0
+trl>=0.8.6
+bitsandbytes>=0.43.0       # QLoRA 4-bit NF4 quantization
+accelerate>=0.26.0
+
+# Dataset
+datasets>=2.14.0
+
+# Experiment tracking
+mlflow>=2.12.0
+
+# Utilities
+numpy>=1.26.0
+safetensors>=0.4.0
